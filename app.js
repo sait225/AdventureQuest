@@ -1,47 +1,47 @@
 // Step data
 const STEPS = [
   {
-    id: 1, title: "Start", emoji: "🏁", points: 0,
+    id: 1, code: "START", title: "Start", emoji: "🏁", points: 0,
     message: "Welcome to the adventure! Scan the QR codes, follow the clues, and collect points. Let's see if you can reach the end!",
     clue: "Keep going straight ahead to find your first challenge."
   },
   {
-    id: 2, title: "To the Library", emoji: "✨", points: 5,
+    id: 2, code: "LIB42", title: "To the Library", emoji: "✨", points: 5,
     message: "Great start! Now, sharpen your mind.",
     clue: "Take a right turn and find the library entrance."
   },
   {
-    id: 3, title: "The Climb", emoji: "🚀", points: 5,
+    id: 3, code: "UP88", title: "The Climb", emoji: "🚀", points: 5,
     message: "You are doing great. Time to change levels!",
     clue: "Turn left and go up the stairs to the next level."
   },
   {
-    id: 4, title: "Science Corridor", emoji: "🧪", points: 5,
+    id: 4, code: "SCI7", title: "Science Corridor", emoji: "🧪", points: 5,
     message: "I smell an experiment in the air!",
     clue: "Make a sharp right turn, walk down the corridor, and find the science lab."
   },
   {
-    id: 5, title: "Strategic Point", emoji: "🎓", points: 5,
+    id: 5, code: "BOSS9", title: "Strategic Point", emoji: "🎓", points: 5,
     message: "Now, be quiet! You are near the authority.",
     clue: "Find the headmaster's office, which is directly opposite the lab."
   },
   {
-    id: 6, title: "The Secret Shelf", emoji: "🔍", points: 5,
+    id: 6, code: "BOOK3", title: "The Secret Shelf", emoji: "🔍", points: 5,
     message: "Almost there! Look closely at your surroundings.",
     clue: "Step into the next room and spot the QR code hidden on the shelf."
   },
   {
-    id: 7, title: "Descent Time", emoji: "🏃", points: 5,
+    id: 7, code: "DOWN5", title: "Descent Time", emoji: "🏃", points: 5,
     message: "Speed up! The prize is getting closer.",
     clue: "Turn left, go along the corridor, and head down the stairs."
   },
   {
-    id: 8, title: "The Final Target", emoji: "🍔", points: 5,
+    id: 8, code: "FOOD1", title: "The Final Target", emoji: "🍔", points: 5,
     message: "Hungry for victory? The finish line is near!",
     clue: "Turn left, keep going straight, and find the canteen in the middle of the hall to claim your prize."
   },
   {
-    id: 9, title: "The Finish Line", emoji: "🎉", points: 0, isFinish: true,
+    id: 9, code: "WIN99", title: "The Finish Line", emoji: "🎉", points: 0, isFinish: true,
     message: "CONGRATULATIONS!\nYou've completed the quest and collected 40 points! Show this screen to the canteen staff to get your reward!",
     clue: null
   }
@@ -185,16 +185,15 @@ function renderStep() {
         <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1); text-align:center;">
           <p style="color:#c4b5fd;font-size:.9rem;margin-bottom:.8rem">If the camera doesn't read, enter the next code:</p>
           <div style="display:flex;gap:.5rem;justify-content:center;align-items:center">
-            <input id="manualNext" type="number" inputmode="numeric" min="1" max="9" placeholder="1-9"
-              style="padding:.6rem;border-radius:10px;border:1px solid #7c5cfc;background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;width:70px;text-align:center;-webkit-appearance:none">
+            <input id="manualNext" type="text" placeholder="CODE"
+              style="padding:.6rem;border-radius:10px;border:1px solid #7c5cfc;background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;width:100px;text-align:center;-webkit-appearance:none;text-transform:uppercase;">
             <button class="btn-success" onclick="goManualStep()" style="padding:.6rem 1.2rem;font-size:.95rem; border-radius:10px; border:none; background: linear-gradient(135deg, #34d399, #06b6d4); color: white; font-weight: bold; cursor: pointer;">Go</button>
           </div>
         </div>
       ` : ''}
 
-      <div class="nav-buttons" style="display:flex; justify-content:space-between; margin-top:1.5rem; gap:1rem;">
-        <button onclick="window.location.href='?'" style="padding:.8rem; flex:1; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#fff; cursor:pointer;">🏠 Main Menu</button>
-        ${stepId < STEPS.length ? `<button onclick="window.location.href='?step=${stepId + 1}'" style="padding:.8rem; flex:1; border-radius:12px; border:none; background:linear-gradient(135deg,#7c5cfc,#e040fb); color:#fff; font-weight:bold; cursor:pointer;">Next Step ⏭️</button>` : ''}
+      <div class="nav-buttons" style="display:flex; justify-content:center; margin-top:1.5rem;">
+        <button onclick="window.location.href='?'" style="padding:.8rem 2rem; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#fff; font-weight:bold; cursor:pointer;">🏠 Main Menu</button>
       </div>
     </div>
   `;
@@ -226,11 +225,15 @@ function renderStep() {
 document.addEventListener('DOMContentLoaded', renderStep);
 
 function goManualStep() {
-  const v = parseInt(document.getElementById('manualNext').value);
-  if (v >= 1 && v <= 9) {
+  const codeInput = document.getElementById('manualNext').value.trim().toUpperCase();
+  const matchedStep = STEPS.find(s => s.code === codeInput);
+  
+  if (matchedStep) {
     // Modify URL parameter and reload
     const url = new URL(window.location);
-    url.searchParams.set('step', v);
+    url.searchParams.set('step', matchedStep.id);
     window.location.href = url.toString();
+  } else {
+    alert("Invalid code entered! Please check the code on the wall.");
   }
 }

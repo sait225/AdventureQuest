@@ -100,15 +100,15 @@
 
   <script>
     const steps = [
-      { id: 1, title: "Start", emoji: "🏁", location: "Starting point" },
-      { id: 2, title: "To the Library", emoji: "✨", location: "Near the library" },
-      { id: 3, title: "The Climb", emoji: "🚀", location: "By the stairs" },
-      { id: 4, title: "Science Corridor", emoji: "🧪", location: "Science lab" },
-      { id: 5, title: "Strategic Point", emoji: "🎓", location: "Near the headmaster's office" },
-      { id: 6, title: "The Secret Shelf", emoji: "🔍", location: "Shelf in the next room" },
-      { id: 7, title: "Descent Time", emoji: "🏃", location: "Top of the stairs" },
-      { id: 8, title: "The Final Target", emoji: "🍔", location: "Near the canteen" },
-      { id: 9, title: "The Finish Line", emoji: "🎉", location: "Canteen / reward area" }
+      { id: 1, code: "START", title: "Start", emoji: "🏁", location: "Starting point" },
+      { id: 2, code: "LIB42", title: "To the Library", emoji: "✨", location: "Near the library" },
+      { id: 3, code: "UP88", title: "The Climb", emoji: "🚀", location: "By the stairs" },
+      { id: 4, code: "SCI7", title: "Science Corridor", emoji: "🧪", location: "Science lab" },
+      { id: 5, code: "BOSS9", title: "Strategic Point", emoji: "🎓", location: "Near the headmaster's office" },
+      { id: 6, code: "BOOK3", title: "The Secret Shelf", emoji: "🔍", location: "Shelf in the next room" },
+      { id: 7, code: "DOWN5", title: "Descent Time", emoji: "🏃", location: "Top of the stairs" },
+      { id: 8, code: "FOOD1", title: "The Final Target", emoji: "🍔", location: "Near the canteen" },
+      { id: 9, code: "WIN99", title: "The Finish Line", emoji: "🎉", location: "Canteen / reward area" }
     ];
 
     let timer;
@@ -140,7 +140,7 @@
           <div class="emoji">${step.emoji}</div>
           <div class="title">Step ${step.id}: ${step.title}</div>
           <div class="location">📍 ${step.location}</div>
-          <div class="qr-number-badge">STEP: ${step.id}</div><br>
+          <div class="qr-number-badge">CODE: ${step.code}</div><br>
           <img src="${qrApiUrl}" alt="QR Code for Step ${step.id}" loading="lazy">
           <div class="preview">${targetUrl}</div>
         `;
