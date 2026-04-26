@@ -49,7 +49,8 @@ const STEPS = [
 
 function getStep() {
   const params = new URLSearchParams(window.location.search);
-  const s = parseInt(params.get('step')) || 1;
+  if (!params.has('step')) return null;
+  const s = parseInt(params.get('step'));
   return Math.max(1, Math.min(9, s));
 }
 
@@ -96,8 +97,38 @@ function renderCheatScreen(attemptedStep) {
   `;
 }
 
+function renderMainMenu() {
+  const container = document.getElementById('game');
+  container.innerHTML = `
+    <div class="card">
+      <div class="step-emoji">🗺️</div>
+      <div class="step-title">QR Adventure Quest</div>
+      <p class="message">Welcome to the adventure! Scan the QR codes around the school, follow clues, and collect points!</p>
+      
+      <div style="margin-top:2rem; display:flex; flex-direction:column; gap:1rem;">
+        <button onclick="window.location.href='?step=1'" style="padding:1rem; border-radius:12px; border:none; background:linear-gradient(135deg,#34d399,#06b6d4); color:#fff; font-size:1.1rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 15px rgba(52,211,153,0.3)">🚀 Start Game</button>
+        <button onclick="resetProgress()" style="padding:1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#fff; font-size:1rem; cursor:pointer;">🔄 Reset Progress</button>
+      </div>
+    </div>
+  `;
+}
+
+function resetProgress() {
+  if(confirm("Are you sure you want to reset all your points and progress?")) {
+    localStorage.removeItem('qr_adventure_steps');
+    alert("Progress reset successfully!");
+    window.location.href = '?';
+  }
+}
+
 function renderStep() {
   const stepId = getStep();
+  
+  if (stepId === null) {
+    renderMainMenu();
+    return;
+  }
+  
   const step = STEPS.find(s => s.id === stepId);
   if (!step) return;
 
@@ -160,6 +191,11 @@ function renderStep() {
           </div>
         </div>
       ` : ''}
+
+      <div class="nav-buttons" style="display:flex; justify-content:space-between; margin-top:1.5rem; gap:1rem;">
+        <button onclick="window.location.href='?'" style="padding:.8rem; flex:1; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#fff; cursor:pointer;">🏠 Main Menu</button>
+        ${stepId < STEPS.length ? `<button onclick="window.location.href='?step=${stepId + 1}'" style="padding:.8rem; flex:1; border-radius:12px; border:none; background:linear-gradient(135deg,#7c5cfc,#e040fb); color:#fff; font-weight:bold; cursor:pointer;">Next Step ⏭️</button>` : ''}
+      </div>
     </div>
   `;
 
