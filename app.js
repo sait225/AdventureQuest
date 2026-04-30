@@ -134,12 +134,7 @@ function renderStep() {
 
   const unlocked = getUnlockedSteps();
 
-  // Anti-cheat: Check if they are allowed to be here
-  // They can only be here if they have unlocked the PREVIOUS step, or if they already unlocked THIS step
-  if (stepId > 1 && !unlocked.includes(stepId - 1) && !unlocked.includes(stepId)) {
-    renderCheatScreen(stepId);
-    return;
-  }
+  // Anti-cheat disabled to allow non-sequential step access
 
   // Valid step, unlock it
   unlockStep(stepId);
